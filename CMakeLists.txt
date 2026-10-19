@@ -13,8 +13,10 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raylib)
 
 add_executable(Epidemix main.cpp
-        include/benchmark.h
-        src/entity.cpp
-        include/entity.h)
+        oop/include/benchmark.h
+        oop/src/entity.cpp
+        oop/include/entity.h
+        oop/src/main_oop.cpp
+        oop/include/main_oop.h)
 target_link_libraries(Epidemix PRIVATE raylib)
-target_include_directories(Epidemix PRIVATE include)
+target_include_directories(Epidemix PRIVATE oop/include)
