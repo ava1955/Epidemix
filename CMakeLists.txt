@@ -11,12 +11,15 @@ FetchContent_Declare(
         GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(raylib)
-
 add_executable(Epidemix main.cpp
         oop/include/benchmark.h
         oop/src/entity.cpp
         oop/include/entity.h
         oop/src/main_oop.cpp
-        oop/include/main_oop.h)
+        oop/include/main_oop.h
+        dod/src/main_dod.c
+        dod/include/main_dod.h
+        dod/include/benchmark.h
+        dod/src/benchmark.c)
 target_link_libraries(Epidemix PRIVATE raylib)
-target_include_directories(Epidemix PRIVATE oop/include)
+target_include_directories(Epidemix PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

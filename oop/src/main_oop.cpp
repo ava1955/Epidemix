@@ -1,10 +1,10 @@
-#include "main_oop.h"
+#include "oop/include/main_oop.h"
 #include <iostream>
 #include <memory>
 #include <vector>
 #include <raylib.h>
-#include "entity.h"
-#include "benchmark.h"
+#include "oop/include/entity.h"
+#include "oop/include/benchmark.h"
 
 constexpr int WINDOW_WIDTH = 1800;
 constexpr int WINDOW_HEIGHT = 1200;

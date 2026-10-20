@@ -1,4 +1,4 @@
-#include "entity.h"
+#include "oop/include/entity.h"
 
 Entity::Entity(float x, float y, bool canMove, float directionVector) {
     position = std::make_pair(x, y);
