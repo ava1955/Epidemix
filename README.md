@@ -100,7 +100,9 @@ The memory numbers are not counted the same way either. OOP tracks every C++ all
 ## Tasks
 
 Alecse Victor-Alin: FPS Counter and Memory Usage, OOP/DOD Switch, Concurrency
+
 Peiculeasa Sergiu-Ștefan: Graphics, CLI Runtime Modifications, Obstacles
+
 Mînăscurtă Victor: Virus spread logic, Readme, Additional aid
 
 Cooordinated using git and CLion Code With Me.
