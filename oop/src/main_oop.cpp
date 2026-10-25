@@ -27,7 +27,6 @@ void oop(OOPState& state, float dt) {
         return c->infected && c->infectedTime >= config.VirusLifetime;
     });
 
-    // Grid: every cell keeps the indices of the entities inside it
     float cellSize = 2.0f * config.CircleRadius;
     int cols = static_cast<int>(config.WINDOW_WIDTH / cellSize) + 1;
     int rows = static_cast<int>(config.WINDOW_HEIGHT / cellSize) + 1;

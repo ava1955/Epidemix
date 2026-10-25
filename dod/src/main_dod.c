@@ -46,7 +46,6 @@ void dod(DODState* state, float dt) {
         fpsInitialized = true;
     }
 
-    // Virus: infected circles age, and once dead they are replaced by the last circle
     for (int i = 0; i < state->count; i++) {
         if (!state->infected[i]) continue;
         state->infectedTime[i] += dt;
@@ -98,7 +97,6 @@ void dod(DODState* state, float dt) {
                         float tmp = state->directionVector[k];
                         state->directionVector[k] = state->directionVector[j];
                         state->directionVector[j] = tmp;
-                        // a healthy circle's infectedTime is always 0, so no reset is needed
                         state->infected[j] = state->infected[k] = state->infected[j] || state->infected[k];
                     }
                 }
@@ -110,7 +108,6 @@ void dod(DODState* state, float dt) {
     memfree(next, state->count * sizeof(int));
     memfree(cellOf, state->count * sizeof(int));
 
-    // Obstacles: (x, y) is the top-left corner; push the circle out and bounce it off the side it hit
     float size = (float)config.ObstacleSize;
     float circleR = (float)config.CircleRadius;
     for (int o = 0; o < config.ObstacleCount; o++) {
