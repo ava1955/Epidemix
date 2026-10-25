@@ -13,6 +13,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(raylib)
 add_executable(Epidemix main.cpp
         oop/include/benchmark.h
+        oop/src/benchmark.cpp
         oop/src/entity.cpp
         oop/include/entity.h
         oop/src/main_oop.cpp
@@ -20,6 +21,8 @@ add_executable(Epidemix main.cpp
         dod/src/main_dod.c
         dod/include/main_dod.h
         dod/include/benchmark.h
-        dod/src/benchmark.c)
+        dod/src/benchmark.c
+        dod/include/entity.h
+        dod/src/entity.c)
 target_link_libraries(Epidemix PRIVATE raylib)
 target_include_directories(Epidemix PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
