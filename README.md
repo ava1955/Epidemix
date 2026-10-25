@@ -96,3 +96,11 @@ In the DOD version there are no circle objects. Positions, directions, infection
 The two versions also handle memory differently, which shows up on screen when the virus is on. OOP deletes each circle when it dies, so its memory reading goes down. DOD allocates its arrays once at their full size. When a circle dies, the last living circle is copied into its slot and the count shrinks, but no memory is given back until the next restart, so the reading stays flat.
 
 The memory numbers are not counted the same way either. OOP tracks every C++ allocation in the program, including containers and strings. DOD only tracks the arrays it allocates itself.
+
+## Tasks
+
+Alecse Victor-Alin: FPS Counter and Memory Usage, OOP/DOD Switch, Concurrency
+Peiculeasa Sergiu-Ștefan: Graphics, CLI Runtime Modifications, Obstacles
+Mînăscurtă Victor: Virus spread logic, Readme, Additional aid
+
+Cooordinated using git and CLion Code With Me.
