@@ -12,6 +12,7 @@ typedef struct {
     size_t memory;
 } DODMemoryUsage;
 
+void FPSInit(void);
 void fpsUpdate(DODFPSCounter* counter);
 float fpsGetValue(const DODFPSCounter* counter);
 

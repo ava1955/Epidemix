@@ -54,14 +54,19 @@ void oop(OOPState& state, float dt) {
         }
     }
 
-    for (auto& obstacle : state.obstacles) {
-        for (auto& entity : state.entities) {
-            obstacle->checkColision(entity.get());
+    #pragma omp parallel for
+    for (int i = 0; i < (int)state.entities.size(); i++) {
+        for (auto& obstacle : state.obstacles) {
+            obstacle->checkColision(state.entities[i].get());
         }
     }
 
-    for (size_t i = 0; i < state.entities.size(); i++) {
+    #pragma omp parallel for
+    for (int i = 0; i < (int)state.entities.size(); i++) {
         state.entities[i]->movement(dt);
+    }
+
+    for (size_t i = 0; i < state.entities.size(); i++) {
         Color color = static_cast<Circle*>(state.entities[i].get())->infected ? GREEN : RED;
         DrawCircle(state.entities[i]->position.first, state.entities[i]->position.second, config.CircleRadius, color);
     }

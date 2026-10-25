@@ -5,29 +5,6 @@
 #include <math.h>
 #include <stdio.h>
 
-#if defined(_WIN32) || defined(_WIN64)
-    #define WIN32_LEAN_AND_MEAN
-    #define NOGDI
-    #define NOUSER
-    #include <windows.h>
-#else
-    #define _POSIX_C_SOURCE 199309L
-    #include <time.h>
-#endif
-
-static double getLocalTime(void) {
-#if defined(_WIN32) || defined(_WIN64)
-    LARGE_INTEGER freq, counter;
-    QueryPerformanceFrequency(&freq);
-    QueryPerformanceCounter(&counter);
-    return (float)counter.QuadPart / (float)freq.QuadPart;
-#else
-    struct timespec ts;
-    clock_gettime(CLOCK_MONOTONIC, &ts);
-    return (float)ts.tv_sec + (float)ts.tv_nsec / 1000000000.0;
-#endif
-}
-
 static bool fpsInitialized = false;
 
 void initDOD(DODState* state) {
@@ -39,10 +16,7 @@ void initDOD(DODState* state) {
 void dod(DODState* state, float dt) {
     if (state == NULL || state->capacity == 0) return;
     if (!fpsInitialized) {
-        DODFPSCounter* fpsInst = FPSCounterGetInstance();
-        if (fpsInst) {
-            fpsInst->last_time = getLocalTime();
-        }
+        FPSInit();
         fpsInitialized = true;
     }
 
@@ -113,6 +87,7 @@ void dod(DODState* state, float dt) {
     for (int o = 0; o < config.ObstacleCount; o++) {
         float ox = config.Obstacles[o][0];
         float oy = config.Obstacles[o][1];
+        #pragma omp parallel for
         for (int i = 0; i < state->count; i++) {
             float dx = state->pos_x[i] - fminf(fmaxf(state->pos_x[i], ox), ox + size);
             float dy = state->pos_y[i] - fminf(fmaxf(state->pos_y[i], oy), oy + size);
@@ -132,6 +107,7 @@ void dod(DODState* state, float dt) {
     float speed = config.CircleSpeed;
     float w = (float)GetScreenWidth();
     float h = (float)GetScreenHeight();
+    #pragma omp parallel for
     for (int i = 0; i < state->count; i++) {
         if (!state->canMove[i]) continue;
         float rad = state->directionVector[i] * DEG2RAD;
