@@ -23,6 +23,8 @@ add_executable(Epidemix main.cpp
         dod/include/benchmark.h
         dod/src/benchmark.c
         dod/include/entity.h
-        dod/src/entity.c)
+        dod/src/entity.c
+        config.h
+        config.c)
 target_link_libraries(Epidemix PRIVATE raylib)
 target_include_directories(Epidemix PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

@@ -8,7 +8,7 @@
 
 struct OOPState {
     std::vector<std::unique_ptr<Entity>> entities;
-    float deleteTimer = 0.0f;
+    std::vector<std::unique_ptr<Square>> obstacles;
     benchmark* fps = &OOPFPSCounter::getInstance();
     benchmark* memory = &OOPMemoryUsage::getInstance();
     bool isInitialized = false;
