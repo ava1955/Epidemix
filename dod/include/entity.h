@@ -11,6 +11,7 @@ typedef struct {
     bool* canMove;
     float* radius;
     bool* infected;
+    float* infectedTime;
     int count;
     int capacity;
 } DODState;
