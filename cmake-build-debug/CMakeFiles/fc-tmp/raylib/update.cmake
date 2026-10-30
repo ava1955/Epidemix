@@ -4,6 +4,6 @@ message(VERBOSE "Executing update step for raylib")
 
 block(SCOPE_FOR VARIABLES)
 
-include("C:/Users/minas/Desktop/Info/dod_project/Epidemix/cmake-build-debug/CMakeFiles/fc-tmp/raylib/raylib-gitupdate.cmake")
+include("/home/bobby/Documents/Epidemix/cmake-build-debug/CMakeFiles/fc-tmp/raylib/raylib-gitupdate.cmake")
 
 endblock()

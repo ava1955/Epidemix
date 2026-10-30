@@ -1,7 +1,9 @@
 cmake_minimum_required(VERSION 3.31)
-project(DOD)
+project(DOD LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_C_STANDARD 99)
+find_package(OpenMP REQUIRED)
 
 include(FetchContent)
 FetchContent_Declare(
@@ -11,6 +13,7 @@ FetchContent_Declare(
         GIT_SHALLOW TRUE
 )
 FetchContent_MakeAvailable(raylib)
+
 add_executable(Epidemix main.cpp
         oop/include/benchmark.h
         oop/src/benchmark.cpp
@@ -26,5 +29,12 @@ add_executable(Epidemix main.cpp
         dod/src/entity.c
         config.h
         config.c)
-target_link_libraries(Epidemix PRIVATE raylib)
+
+target_link_libraries(Epidemix
+        PRIVATE
+        raylib
+        OpenMP::OpenMP_C
+        OpenMP::OpenMP_CXX
+)
+
 target_include_directories(Epidemix PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
