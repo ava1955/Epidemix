@@ -14,6 +14,14 @@ typedef struct {
     float* infectedTime;
     int count;
     int capacity;
+
+    float* obs_pos_x;
+    float* obs_pos_y;
+    float* obs_size;
+    int* obs_totalCollisions;
+    bool* obs_infected;
+    int obs_count;
+    int obs_capacity;
 } DODState;
 
 void initDODState(DODState* state, int initialCapacity);

@@ -35,6 +35,9 @@ public:
 class Square : public Shape {
 public:
     float size;
+    int totalCollisions;
+    int infectionThreshold;
+    bool infected;
 
     Square(float x, float y, bool canMove, float directionVector);
 

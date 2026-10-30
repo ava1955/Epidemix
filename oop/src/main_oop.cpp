@@ -72,6 +72,7 @@ void oop(OOPState& state, float dt) {
     }
 
     for (auto& obstacle : state.obstacles) {
-        DrawRectangle(obstacle->position.first, obstacle->position.second, obstacle->size, obstacle->size, DARKGRAY);
+        Color color = static_cast<Square*>(obstacle.get())->infected ? DARKGREEN : DARKGRAY;
+        DrawRectangle(obstacle->position.first, obstacle->position.second, obstacle->size, obstacle->size, color);
     }
 }

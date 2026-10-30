@@ -2,7 +2,7 @@
 
 Epidemix is a small epidemic simulation written twice: once in C++ with classic object-oriented design (OOP) and once in C with data-oriented design (DOD). Both versions simulate the same world, so you can switch between them while the program runs and compare how fast they are and how much memory they use.
 
-The world is a window full of moving circles. They bounce off the window edges, off a few fixed square obstacles, and off each other. When the virus is turned on, one circle starts out infected. Infection spreads on contact, and infected circles die five seconds after catching it.
+The world is a window full of moving circles. They bounce off the window edges, off a few fixed square obstacles, and off each other. When the virus is turned on, one circle starts out infected. Infection spreads on contact and through surfaces: obstacles accumulate viral load from collisions and can become infectious themselves. Infected circles die five seconds after catching it.
 
 Graphics are drawn with [raylib](https://www.raylib.com/).
 
@@ -54,6 +54,8 @@ Starting values live in `config.c`:
 | `Obstacles` | Top-left corner of each obstacle, up to 32 |
 | `Virus` | 1 to start with the virus on, 0 for off |
 | `VirusLifetime` | Seconds an infected circle lives |
+| `InfectionThreshold` | Number of collisions needed for an obstacle to become infectious |
+| `InfectionChance` | Probability (1-100) an infectious obstacle infects a healthy circle |
 
 If you add or remove obstacles, update `ObstacleCount` to match.
 
@@ -79,7 +81,7 @@ Each frame, the active version runs the same steps in the same order:
 1. Remove circles whose infection has run its course.
 2. Sort every circle into a grid of small cells, each as wide as the collision distance.
 3. Check each circle against the circles in its own cell and the eight cells around it. Colliding circles swap directions, and infection passes between them.
-4. Push circles out of any obstacle they overlap and bounce them off it.
+4. Push circles out of any obstacle they overlap and bounce them off it. Obstacles also accumulate collisions here, eventually becoming infectious and spreading the virus to circles.
 5. Move every circle and bounce it off the window edges.
 6. Draw the circles and obstacles.
 

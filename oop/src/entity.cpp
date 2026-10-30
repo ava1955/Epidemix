@@ -71,7 +71,9 @@ void Circle::movement(float dt) {
     if (directionVector >= 360.0f) directionVector -= 360.0f;
 }
 
-Square::Square(float x, float y, bool canMove, float directionVector) : Shape(x, y, canMove, directionVector), size(static_cast<float>(config.ObstacleSize)) { }
+Square::Square(float x, float y, bool canMove, float directionVector)
+    : Shape(x, y, canMove, directionVector), size(static_cast<float>(config.ObstacleSize)),
+    totalCollisions(0), infectionThreshold(config.InfectionThreshold), infected(false) { }
 
 void Square::checkColision(Entity* a) {
     float r = config.CircleRadius;
@@ -88,6 +90,22 @@ void Square::checkColision(Entity* a) {
         else {
             a->position.second = dy > 0 ? position.second + size + r : position.second - r;
             a->directionVector = -a->directionVector;
+        }
+
+        this->totalCollisions++;
+
+        if (this->totalCollisions >= this->infectionThreshold) {
+            this->infected = true;
+        }
+
+        if (this->infected) {
+            auto circle = static_cast<Circle*>(a);
+
+            if (!circle->infected) {
+                if (GetRandomValue(1, 100) <= config.InfectionChance) {
+                    circle->infected = true;
+                }
+            }
         }
     }
 }

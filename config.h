@@ -14,6 +14,8 @@ typedef struct Config {
     float Obstacles[MAX_OBSTACLES][2];
     int Virus;
     float VirusLifetime;
+    int InfectionThreshold;
+    int InfectionChance;
 } Config;
 
 extern Config config;

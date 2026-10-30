@@ -25,6 +25,24 @@ void initDODState(DODState* state, int initialCapacity) {
     if (config.Virus && initialCapacity > 0) {
         state->infected[0] = true;
     }
+
+    state->obs_count = 0;
+    state->obs_capacity = config.ObstacleCount;
+
+    state->obs_pos_x = (float*)memalloc(config.ObstacleCount * sizeof(float));
+    state->obs_pos_y = (float*)memalloc(config.ObstacleCount * sizeof(float));
+    state->obs_size = (float*)memalloc(config.ObstacleCount * sizeof(float));
+    state->obs_totalCollisions = (int*)memalloc(config.ObstacleCount * sizeof(int));
+    state->obs_infected = (bool*)memalloc(config.ObstacleCount * sizeof(bool));
+
+    for (int i = 0; i < config.ObstacleCount; i++) {
+        state->obs_pos_x[i] = (float)config.Obstacles[i][0];
+        state->obs_pos_y[i] = (float)config.Obstacles[i][1];
+        state->obs_size[i] = (float)config.ObstacleSize;
+        state->obs_totalCollisions[i] = 0;
+        state->obs_infected[i] = false;
+        state->obs_count++;
+    }
 }
 
 void freeDODState(DODState* state) {
@@ -39,4 +57,18 @@ void freeDODState(DODState* state) {
     memfree(state->infectedTime, cap * sizeof(float));
     state->count = 0;
     state->capacity = 0;
+
+    int obsCap = state->obs_capacity;
+    if (obsCap > 0) {
+        memfree(state->obs_pos_x, obsCap * sizeof(float));
+        memfree(state->obs_pos_y, obsCap * sizeof(float));
+        memfree(state->obs_size, obsCap * sizeof(float));
+        memfree(state->obs_totalCollisions, obsCap * sizeof(int));
+        memfree(state->obs_infected, obsCap * sizeof(bool));
+    }
+
+    state->count = 0;
+    state->capacity = 0;
+    state->obs_count = 0;
+    state->obs_capacity = 0;
 }

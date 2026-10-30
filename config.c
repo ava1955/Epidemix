@@ -18,4 +18,6 @@ Config config = {
     },
     .Virus = 0,
     .VirusLifetime = 5.0f,
+    .InfectionThreshold = 100,
+    .InfectionChance = 30,
 };

@@ -82,11 +82,12 @@ void dod(DODState* state, float dt) {
     memfree(next, state->count * sizeof(int));
     memfree(cellOf, state->count * sizeof(int));
 
-    float size = (float)config.ObstacleSize;
     float circleR = (float)config.CircleRadius;
-    for (int o = 0; o < config.ObstacleCount; o++) {
-        float ox = config.Obstacles[o][0];
-        float oy = config.Obstacles[o][1];
+    for (int o = 0; o < state->obs_count; o++) {
+        float ox = state->obs_pos_x[o];
+        float oy = state->obs_pos_y[o];
+        float size = state->obs_size[o];
+
         #pragma omp parallel for
         for (int i = 0; i < state->count; i++) {
             float dx = state->pos_x[i] - fminf(fmaxf(state->pos_x[i], ox), ox + size);
@@ -99,6 +100,21 @@ void dod(DODState* state, float dt) {
                 else {
                     state->pos_y[i] = dy > 0 ? oy + size + circleR : oy - circleR;
                     state->directionVector[i] = -state->directionVector[i];
+                }
+                #pragma omp atomic
+                state->obs_totalCollisions[o]++;
+
+                if (state->obs_totalCollisions[o] >= config.InfectionThreshold) {
+                    state->obs_infected[o] = true;
+                }
+
+                if (state->obs_infected[o] && !state->infected[i]) {
+                    #pragma omp critical
+                    {
+                        if (GetRandomValue(1, 100) <= config.InfectionChance) {
+                            state->infected[i] = true;
+                        }
+                    }
                 }
             }
         }
@@ -140,6 +156,7 @@ void dod(DODState* state, float dt) {
     }
 
     for (int o = 0; o < config.ObstacleCount; o++) {
-        DrawRectangle((int)config.Obstacles[o][0], (int)config.Obstacles[o][1], config.ObstacleSize, config.ObstacleSize, DARKGRAY);
+        Color color = state->obs_infected[o] ? DARKGREEN : DARKGRAY;
+        DrawRectangle((int)config.Obstacles[o][0], (int)config.Obstacles[o][1], config.ObstacleSize, config.ObstacleSize, color);
     }
 }
