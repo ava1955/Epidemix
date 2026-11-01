@@ -14,7 +14,9 @@ bool restart = false;
 
 void readCommands() {
     std::string name, value;
-    while (std::cin >> name >> value) {
+    while (std::cin >> name) {
+        if (name == "exit") { exit(0); }
+        std::cin >> value;
         if (name == "entities") { config.EntityCount = std::atoi(value.c_str()); restart = true; }
         if (name == "speed") config.CircleSpeed = std::atof(value.c_str());
         if (name == "virus") { config.Virus = value == "on"; restart = false; }
@@ -33,7 +35,7 @@ void translateIntoDOD(OOPState& oopState, DODState& dodState)  {
             dodState.infectedTime[index] = ptr->infectedTime;
         }
         else {
-            std::cout<<"ghabytzu e taktu an pushkarye";
+            std::cout<<"eroare";
         }
         ++index;
     }
