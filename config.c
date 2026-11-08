@@ -1,11 +1,11 @@
 #include "config.h"
 
 Config config = {
-    .WINDOW_WIDTH = 1920,
-    .WINDOW_HEIGHT = 1080,
+    .WINDOW_WIDTH = 2880,
+    .WINDOW_HEIGHT = 1800,
     .CircleRadius = 2,
     .CircleSpeed = 100.0f,
-    .EntityCount = 4000,
+    .EntityCount = 50000,
     .TargetFPS = 1000,
     .ObstacleSize = 10,
     .ObstacleCount = 5,

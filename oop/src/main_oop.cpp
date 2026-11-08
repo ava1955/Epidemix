@@ -4,8 +4,46 @@
 
 void InitOOP(OOPState& state) {
     state.entities.clear();
-    for (auto i = 0; i < config.EntityCount; i++) {
-        state.entities.push_back(std::make_unique<Circle>(rand() % config.WINDOW_WIDTH, rand() % config.WINDOW_HEIGHT, true, rand() % 360));
+    int initialCapacity = config.EntityCount;
+
+    float initRadius = (float)config.CircleRadius;
+    float padding = 2.0f;
+    float cellSize = (initRadius * 2.0f) + padding;
+
+    int cols = (int)(config.WINDOW_WIDTH / cellSize);
+    int rows = (int)(config.WINDOW_HEIGHT / cellSize);
+
+    if (cols <= 0) cols = 1;
+    if (rows <= 0) rows = 1;
+
+    int maxCapacity = cols * rows;
+
+    if (initialCapacity > maxCapacity)
+        initialCapacity = maxCapacity;
+
+    std::vector<int> cellIndices(maxCapacity);
+    for (int i = 0; i < maxCapacity; i++) {
+        cellIndices[i] = i;
+    }
+
+    for (int i = maxCapacity - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        std::swap(cellIndices[i], cellIndices[j]);
+    }
+
+    for (auto i = 0; i < initialCapacity; i++) {
+        int cellIndex = cellIndices[i];
+        int col = cellIndex % cols;
+        int row = cellIndex / cols;
+
+        float baseX = (col * cellSize) + (cellSize / 2.0f);
+        float baseY = (row * cellSize) + (cellSize / 2.0f);
+
+        state.entities.push_back(std::make_unique<Circle>(
+            baseX,
+            baseY,
+            true,
+            rand() % 360));
     }
     if (config.Virus && !state.entities.empty()) {
         static_cast<Circle*>(state.entities[0].get())->infected = true;

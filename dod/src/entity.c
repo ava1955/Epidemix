@@ -2,6 +2,20 @@
 #include "config.h"
 
 void initDODState(DODState* state, int initialCapacity) {
+    float initRadius = (float)config.CircleRadius;
+    float padding = 2.0f;
+    float cellSize = (initRadius * 2.0f) + padding;
+
+    int cols = (int)(config.WINDOW_WIDTH / cellSize);
+    int rows = (int)(config.WINDOW_HEIGHT / cellSize);
+
+    if (cols <= 0) cols = 1;
+    if (rows <= 0) rows = 1;
+
+    int maxCapacity = cols * rows;
+
+    if (initialCapacity > maxCapacity) initialCapacity = maxCapacity;
+
     state->count = 0;
     state->capacity = initialCapacity;
     state->pos_x = (float*)memalloc(initialCapacity * sizeof(float));
@@ -12,16 +26,49 @@ void initDODState(DODState* state, int initialCapacity) {
     state->infected = (bool*)memalloc(initialCapacity * sizeof(bool));
     state->infectedTime = (float*)memalloc(initialCapacity * sizeof(float));
 
+    // for (int i = 0; i < initialCapacity; i++) {
+    //     state->pos_x[i] = (float)(rand() % config.WINDOW_WIDTH);
+    //     state->pos_y[i] = (float)(rand() % config.WINDOW_HEIGHT);
+    //     state->directionVector[i] = (float)(rand() % 360);
+    //     state->canMove[i] = true;
+    //     state->radius[i] = (float)config.CircleRadius;
+    //     state->infected[i] = false;
+    //     state->infectedTime[i] = 0.0f;
+    //     state->count++;
+    // }
+
+    int* cellIndices = (int*)memalloc(maxCapacity * sizeof(int));
+    for (int i = 0; i < maxCapacity; i++) {
+        cellIndices[i] = i;
+    }
+
+    for (int i = maxCapacity - 1; i > 0; i--) {
+        int j = rand() % (i + 1);
+        int temp = cellIndices[i];
+        cellIndices[i] = cellIndices[j];
+        cellIndices[j] = temp;
+    }
+
     for (int i = 0; i < initialCapacity; i++) {
-        state->pos_x[i] = (float)(rand() % config.WINDOW_WIDTH);
-        state->pos_y[i] = (float)(rand() % config.WINDOW_HEIGHT);
+        int cellIndex = cellIndices[i];
+
+        int col = cellIndex % cols;
+        int row = cellIndex / cols;
+
+        float baseX = (col * cellSize) + (cellSize / 2.0f);
+        float baseY = (row * cellSize) + (cellSize / 2.0f);
+
+        state->pos_x[i] = baseX;
+        state->pos_y[i] = baseY;
+
         state->directionVector[i] = (float)(rand() % 360);
         state->canMove[i] = true;
-        state->radius[i] = (float)config.CircleRadius;
+        state->radius[i] = initRadius;
         state->infected[i] = false;
         state->infectedTime[i] = 0.0f;
         state->count++;
     }
+
     if (config.Virus && initialCapacity > 0) {
         state->infected[0] = true;
     }
@@ -43,6 +90,8 @@ void initDODState(DODState* state, int initialCapacity) {
         state->obs_infected[i] = false;
         state->obs_count++;
     }
+
+    memfree(cellIndices, maxCapacity * sizeof(int));
 }
 
 void freeDODState(DODState* state) {
