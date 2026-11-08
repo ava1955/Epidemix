@@ -37,4 +37,6 @@ target_link_libraries(Epidemix
         OpenMP::OpenMP_CXX
 )
 
+target_link_options(Epidemix PRIVATE -fopenmp)
+
 target_include_directories(Epidemix PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
